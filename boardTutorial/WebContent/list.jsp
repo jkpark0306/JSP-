@@ -1,53 +1,80 @@
-//í…ŒìŠ¤íŠ¸
-<%@page import="com.board.beans.Board"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.regex.Pattern"%>
-<%@page import="java.sql.*"%>
-<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@page import = "java.sql.*" %>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"  pageEncoding="EUC-KR"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>ê²Œì‹œê¸€ ë¦¬ìŠ¤íŠ¸</title>
-<style type="text/css">
-table, td, th {
-	border: 1px solid green;
-}
-
-th {
-	background-color: green;
-	color: white;
-}
-</style>
-
-
+<title>°Ô½Ã±Û ¸®½ºÆ®</title>
 </head>
-<body>
-	<h1>ê²Œì‹œê¸€ ë¦¬ìŠ¤íŠ¸</h1>
-	<table>
-		<tr>
-			<th>ë²ˆí˜¸</th>
-			<th>ì œëª©</th>
-			<th>ì‘ì„±ì</th>
-			<th>ë‚ ì§œ</th>
-			<th>ì¡°íšŒìˆ˜</th>
-		</tr>
-		
-		<c:forEach items="${articleList }" var="article">
-		<tr>
-			<td>${article.idx }</td>
-			<td><a href='content.jsp?idx=${article.idx}'>${article.title}</a></td>
-			<td>${article.writer }</td>
-			<td>${article.regdate }</td>
-			<td>${article.count }</td>
-			
-		</tr>
-		</c:forEach>
-	</table>
-	<a href="write.jsp">ê¸€ì“°ê¸°</a>
 
+<%
+	request.setCharacterEncoding("euc-kr");
+	String title = request.getParameter("title");
+	String writer = request.getParameter("writer");
+	String regdate = request.getParameter("regdate");
+	int count = 10000;
+
+	String content = request.getParameter("content");
+if(title == "" ||title == null) out.println("titleÀÌ nullÀÔ´Ï´Ù.");
+ 
+if(writer == "" ||writer == null)
+    out.println("writer°¡ nullÀÔ´Ï´Ù.");   
+else if(!Pattern.matches("^[_0-9a-zA-Z-]+@[0-9a-zA-Z-]+(.[_0-9a-zA-Z-]+)*$", writer))
+    out.println("ÀÌ¸ŞÀÏ Çü½ÄÀÌ ¾Æ´Õ´Ï´Ù.");
+ 
+if(regdate == "" ||regdate == null)
+    out.println("regdate°¡ nullÀÔ´Ï´Ù.");
+else if(!Pattern.matches("^[0-9]*$", regdate))
+    out.println("¼ıÀÚÇü½ÄÀÌ ¾Æ´Õ´Ï´Ù.");
+ 
+if(content == "" ||content == null) out.println("content°¡ nullÀÔ´Ï´Ù.");
+
+try {
+	Connection conn = null;
+	
+    String driverName = "com.mysql.jdbc.Driver"; //µ¥ÀÌÅÍº£ÀÌ½º¿¡ Á¢¼ÓÇÏ±âÀ§ÇÑ µå¶óÀÌ¹ö¸¦ ·ÎµåÇÕ´Ï´Ù.
+
+    String url = "jdbc:mysql://125.141.59.79:3306/ASM_DB?autoReconnect=true&useSSL=false&characterEncoding=UTF8";            //Á¢¼Ó URLÁ¤º¸¿Í Æ÷Æ®¹øÈ£(oracleÆ÷Æ®), sid(oracle¹öÀü)
+
+	String id = "jkpark";
+    
+    String pw = "wlrb1234@";
+
+    Class.forName(driverName);
+	
+    conn=DriverManager.getConnection(url,id,pw);
+    //Connection con = DriverManager.getConnection(url,"jkpark","wlrb1234@");    // getCo... : °èÁ¤Á¤º¸ url, id, pw
+
+    out.println("Mysql µ¥ÀÌÅÍº£ÀÌ½º db¿¡ ¼º°øÀûÀ¸·Î Á¢¼ÓÇß½À´Ï´Ù");
+	
+    Statement stmt = conn.createStatement();
+    
+    	String sql = "INSERT INTO BOARD"+
+    					"(title,writer,regdate,count,content)"+
+    					"values('"+title+"', '"+writer+"', now(), '1', '"+content+"')";
+    	
+    					
+    				stmt.executeUpdate(sql);
+    conn.close();
+    
+    
+
+} catch (Exception e) {
+
+    out.println("Mysql µ¥ÀÌÅÍº£ÀÌ½º db Á¢¼Ó¿¡ ¹®Á¦°¡ ÀÖ½À´Ï´Ù. <hr>");
+
+    out.println(e.getMessage());
+
+    e.printStackTrace();
+
+}
+finally{
+	out.print("<script>location.href='list.jsp';</script>");
+}
+
+%>
+<body>
 </body>
 
 </html>

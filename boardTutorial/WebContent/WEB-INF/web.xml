@@ -15,7 +15,7 @@
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>Controller-Action</servlet-name>
+		<servlet-name>ControllerAction</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 </web-app>

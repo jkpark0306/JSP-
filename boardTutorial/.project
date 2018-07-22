@@ -32,7 +32,7 @@
 		<link>
 			<name>WebContent/WEB-INF/lib/mysql-connector-java-8.0.11.jar</name>
 			<type>1</type>
-			<location>C:/Users/jkpark/OneDrive/문서/웹공부/boardTutorial/WebContent/WEB-INF/lib/mysql-connector-java-8.0.11.jar</location>
+			<location>C:/Users/jkpark/eclipse-workspace/boardTutorial/board/boardTutorial/WebContent/WEB-INF/lib/mysql-connector-java-8.0.11.jar</location>
 		</link>
 	</linkedResources>
 </projectDescription>
